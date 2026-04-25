@@ -104,18 +104,18 @@ mvn clean package -DskipTests
 
 ### 2) Levantar P1 (Main Container + GUI de JADE)
 ```bash
-mvn exec:java -Dexec.mainClass="pe.unmsm.minsa.launch.Platform1Launcher"
+mvn exec:java -Dexec.mainClass="pe.grupo4.minsa.launch.Platform1Launcher"
 ```
 
 ### 3) Levantar P2 (en otra terminal)
 ```bash
-mvn exec:java -Dexec.mainClass="pe.unmsm.minsa.launch.Platform2Launcher" -Dexec.args="localhost 1099"
+mvn exec:java -Dexec.mainClass="pe.grupo4.minsa.launch.Platform2Launcher" -Dexec.args="localhost 1099"
 ```
 
 ### En dos máquinas/VMs distintas
 Reemplaza `localhost` por la IP de la máquina donde corre P1:
 ```bash
-mvn exec:java -Dexec.mainClass="pe.unmsm.minsa.launch.Platform2Launcher" -Dexec.args="192.168.1.10 1099"
+mvn exec:java -Dexec.mainClass="pe.grupo4.minsa.launch.Platform2Launcher" -Dexec.args="192.168.1.10 1099"
 ```
 
 ---
