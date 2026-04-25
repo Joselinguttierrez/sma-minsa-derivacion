@@ -53,17 +53,16 @@ public class Platform1Launcher {
 
             Thread.sleep(6000);// Esperar que se resuelva la primera derivacion
 
-            // ── Paciente 2: Maria Lopez - urgencia moderada ───────────────
             AgentController paciente2 = mainContainer.createNewAgent(
-                "Paciente-MariaLopez",
-                "pe.grupo4.minsa.agents.AgentePaciente",
-                new Object[]{
-                    "Maria Lopez",
-                    "URGENCIA_MODERADA",
-                    "dolor_pecho,mareos,presion_alta",
-                    "Lima-Jesus_Maria",
-                    "EMERGENCIA"
-                }
+                    "Paciente-RosaAlvarado",
+                    "pe.unmsm.minsa.agents.AgentePaciente",
+                    new Object[]{
+                            "Rosa Alvarado Flores",
+                            "URGENCIA_CRITICA",
+                            "traumatismo_craneal,fractura_costillas,hemorragia_interna",
+                            "Lima-La_Victoria",
+                            "UCI"
+                    }
             );
             paciente2.start();
 
