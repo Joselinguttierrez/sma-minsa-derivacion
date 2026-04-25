@@ -16,7 +16,7 @@ public class Platform1Launcher {
         Profile profile = new ProfileImpl();
         profile.setParameter(Profile.MAIN_HOST, "localhost");
         profile.setParameter(Profile.MAIN_PORT, "1099");
-        profile.setParameter(Profile.GUI, "true");           // Abre la GUI de JADE
+        profile.setParameter(Profile.GUI, "true");
         profile.setParameter(Profile.PLATFORM_ID, "MINSA-SMA");
 
         AgentContainer mainContainer = rt.createMainContainer(profile);
@@ -27,16 +27,16 @@ public class Platform1Launcher {
             System.out.println("║   PLATAFORMA 1: Central MINSA                    ║");
             System.out.println("╚══════════════════════════════════════════════════╝\n");
 
-            // ── Crear Agente Central ──────────────────────────────────────
+            // crear agente central
             AgentController central = mainContainer.createNewAgent(
                 "AgenteCentral",
                 "pe.grupo4.minsa.agents.AgenteCentral",
                 new Object[]{}
             );
             central.start();
-            Thread.sleep(8000); // Esperar 8 segundos para que P2 se conecte, esperar que la Central se registre en el DF
+            Thread.sleep(8000); // espera de 8 segundos para conectar P2 y registre los hospitales
 
-            // ── Paciente 1: Carlos Garcia - COVID critico ─────────────────
+            // Paciente 1
             AgentController paciente1 = mainContainer.createNewAgent(
                     "Paciente-CarlosGarcia",
                     "pe.grupo4.minsa.agents.AgentePaciente",
@@ -51,11 +51,11 @@ public class Platform1Launcher {
 
             paciente1.start();
 
-            Thread.sleep(6000);// Esperar que se resuelva la primera derivacion
+            Thread.sleep(6000);// espera de 6 segundos para que el primer paciente sea derivado antes de ingresar el segundo paciente
 
             AgentController paciente2 = mainContainer.createNewAgent(
                     "Paciente-RosaAlvarado",
-                    "pe.unmsm.minsa.agents.AgentePaciente",
+                    "pe.gr4upo.minsa.agents.AgentePaciente",
                     new Object[]{
                             "Rosa Alvarado Flores",
                             "URGENCIA_CRITICA",
