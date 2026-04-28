@@ -1,4 +1,4 @@
-# SMA-JADE: Sistema Inteligente de Derivación de Pacientes MINSA🏥
+# SMA-JADE: Sistema Inteligente de Derivación de Pacientes MINSA
 
 Sistema Multi-Agente desarrollado con JADE para simular el proceso de derivación de pacientes entre hospitales de la red MINSA en el Perú.
 
