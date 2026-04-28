@@ -163,10 +163,10 @@ Un paciente en estado crítico requiere una cama UCI.
 
 ## Integrantes:
 
-- Gutierrez Mamani, Joselin Victoria
-- Chaco Flores, Jose Luis
-- Layme Moya, Victor Hugo
-- Matos Ramos, Franco Antonio
+-Gutierrez Mamani, Joselin Victoria
+-Chaco Flores, Jose Luis
+-Layme Moya, Victor Hugo
+-Matos Ramos, Franco Antonio
 
 
 ##  Links
