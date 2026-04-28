@@ -1,101 +1,119 @@
-# SMA-JADE: Sistema de Derivación de Pacientes MINSA 🏥
+# SMA-JADE: Sistema Inteligente de Derivación de Pacientes MINSA🏥
 
-Proyecto de Sistema Multi-Agente con JADE para la gestión autónoma de derivación
-de pacientes entre hospitales de la red MINSA - Perú.
+Sistema Multi-Agente desarrollado con JADE para simular el proceso de derivación de pacientes entre hospitales de la red MINSA en el Perú.
 
-> **Contexto:** Durante la pandemia COVID-19 (2020-2021), el Perú tuvo una de las
-> tasas de mortalidad más altas del mundo. Pacientes críticos perdían horas buscando
-> camas UCI disponibles. Este sistema simula cómo los agentes inteligentes pueden
-> resolver ese problema en tiempo real.
 
----
+## Descripción del Proyecto
 
-## 🎯 Objetivo de la tarea
+Durante la emergencia sanitaria ocasionada por la COVID-19, uno de los principales problemas en el sistema de salud peruano fue la dificultad para encontrar camas disponibles, especialmente en las unidades de cuidados intensivos (UCI). En muchos casos, los pacientes debían esperar largos periodos mientras se gestionaba su traslado a un hospital con capacidad de atención.
 
-Demostrar:
-- ✅ Entorno distribuido (P1 y P2)
-- ✅ Mínimo 4 agentes (tenemos 5)
-- ✅ Uso de páginas amarillas (DF)
-- ✅ Intercambio de mensajes FIPA-ACL
-- ✅ Lógica colaborativa entre agentes
-- ✅ Implementación en Maven + Java
+Frente a esta problemática, el presente proyecto propone una solución basada en Sistemas Multi-Agente (SMA), utilizando la plataforma JADE. El sistema permite simular la comunicación y coordinación automática entre distintos actores del proceso de derivación hospitalaria, optimizando la búsqueda de disponibilidad y reduciendo los tiempos de respuesta.
 
 ---
 
-## 🤖 Agentes del sistema
+## Objetivo de la tarea
 
-### Plataforma 1 (P1) — Central MINSA
+Diseñar e implementar un sistema distribuido basado en agentes inteligentes que permita gestionar de manera autónoma la derivación de pacientes críticos entre hospitales de la red MINSA.
+
+Asimismo, el proyecto busca demostrar la aplicación práctica de los conceptos fundamentales de los Sistemas Multi-Agente, tales como:
+
+- Arquitectura distribuida.
+- Comunicación mediante mensajes FIPA-ACL.
+- Descubrimiento de servicios usando el Directory Facilitator (DF).
+- Coordinación y cooperación entre agentes autónomos.
+- Implementación utilizando Java, Maven y JADE.
+
+---
+
+##  Agentes del sistema
+
+El sistema se encuentra dividido en dos plataformas distribuidas:
+
+### Plataforma 1 (Central MINSA) —
+
+ Esta plataforma representa el centro de coordinación encargado de recibir las solicitudes de atención y gestionar el proceso de derivación.
 | Agente | Rol |
 |---|---|
-| `AgenteCentral` | Coordinador: recibe solicitudes, busca hospitales en DF, coordina traslado |
-| `AgentePaciente` | Reporta urgencia, síntomas y necesidad de cama a la Central |
+| `AgenteCentral` | Coordina todo el proceso de búsqueda y asignación de camas. |
+| `AgentePaciente` |Genera la solicitud de atención médica, enviando la información del paciente |
 
 ### Plataforma 2 (P2) — Red de Hospitales
 | Agente | Rol |
 |---|---|
-| `AgenteHospital` | Gestiona disponibilidad de camas (UCI/Emergencia/General) |
-| `AgenteMedico` | Evalúa clínicamente si puede aceptar al paciente |
-| `AgenteAmbulancia` | Confirma el traslado físico con ETA estimado |
+| `AgenteHospital` | Administra la disponibilidad de camas y responde a las solicitudes |
+| `AgenteMedico` | Evalúa la condición clínica del paciente |
+| `AgenteAmbulancia` | Gestiona y confirma el traslado del paciente |
 
 ---
 
-## 🔄 Flujo de mensajes FIPA-ACL
+## Flujo de mensajes FIPA-ACL
 
-```
-AgentePaciente  →  AgenteCentral    INFORM   URGENCIA_CRITICA|sintomas|ubicacion|UCI|Juan
-AgenteCentral   →  DF               BUSCA    hospitales disponibles
-AgenteCentral   →  AgenteHospital   REQUEST  SOLICITUD_CAMA|UCI|URGENCIA_CRITICA|Juan
-AgenteHospital  →  AgenteMedico     REQUEST  EVALUAR_PACIENTE|URGENCIA_CRITICA|Juan|UCI
-AgenteMedico    →  AgenteHospital   AGREE    PACIENTE_ACEPTADO|Juan
-AgenteHospital  →  AgenteCentral    AGREE    CAMA_DISPONIBLE|Rebagliati|2
-AgenteCentral   →  AgenteAmbulancia REQUEST  SOLICITUD_TRASLADO|Rebagliati
-AgenteAmbulancia→  AgenteCentral    INFORM   TRASLADO_CONFIRMADO|Rebagliati|ETA:8min
+```El proceso de derivación sigue la siguiente secuencia:
+
+1. El AgentePaciente reporta una situación crítica a la Central MINSA.
+2. El AgenteCentral consulta al Directory Facilitator para localizar hospitales disponibles.
+3. Se envía una solicitud al AgenteHospital correspondiente.
+4, El AgenteHospital solicita al AgenteMedico la evaluación del caso.
+5. Una vez aceptado el paciente, el hospital confirma la disponibilidad de cama.
+6. Finalmente, el AgenteCentral coordina el traslado mediante el AgenteAmbulancia.
+
+Este flujo reproduce de manera simplificada un escenario real de derivación hospitalaria.
 ```
 
 ---
 
-## 🏗 Estructura del proyecto
+## Tecnologías Utilizadas
+- Java 17
+- Maven 3.8 o superior
+- JADE 4.6.0
+---
 
-```
-sma-minsa/
+
+## Estructura del Proyecto
+
+```text
+sma-minsa-derivacion/
 ├── pom.xml
-├── libs/
-│   └── jade.jar                    ← Descargar de jade.tilab.com
-└── src/main/java/pe/unmsm/minsa/
-    ├── core/
-    │   ├── Protocol.java           ← Constantes de mensajes
-    │   └── DfUtils.java            ← Utilidades para Páginas Amarillas
-    ├── agents/
-    │   ├── AgentePaciente.java
-    │   ├── AgenteCentral.java
-    │   ├── AgenteHospital.java
-    │   ├── AgenteMedico.java
-    │   └── AgenteAmbulancia.java
-    └── launch/
-        ├── Platform1Launcher.java  ← Levanta P1 (Central MINSA)
-        └── Platform2Launcher.java  ← Levanta P2 (Hospitales)
+├── README.md
+├── libs/  
+│   └── jade.jar                            ← Descargar de jade.tilab.com
+├── src/main/java/pe/grupo4/minsa/
+│   ├── agents/
+│   │   ├── AgenteAmbulancia.java
+│   │   ├── AgenteCentral.java
+│   │   ├── AgenteHospital.java
+│   │   ├── AgenteMedico.java
+│   │   └── AgentePaciente.java
+│   ├── core/
+│   │   ├── DfUtils.java                    ← Utilidades para Páginas Amarillas
+│   │   └── Protocol.java                   ← Constantes de mensajes
+│   └── launch/
+│       ├── Platform1Launcher.java          ← Levanta P1 (Central MINSA)
+│       └── Platform2Launcher.java          ← Levanta P2 (Hospitales)
+└── target/
+
 ```
 
 ---
 
-## ⚙ Requisitos
+##  Requisitos Previos
 
-- Java 17+
-- Maven 3.8+
+- Java JDK 17 o superior.
+- Maven 3.8 o superior
 - JADE 4.6.0 (`jade.jar` en la carpeta `/libs`)
 
 ---
 
-## 📥 Paso previo: Descargar JADE
+## Paso previo: Descargar JADE
 
-1. Ir a: https://jade.tilab.com/dl.php?file=JADE-bin-4.6.0.zip  
+1. Descargar JADE desde el sitio oficial de TILAB: https://jade.tilab.com/dl.php?file=JADE-bin-4.6.0.zip  
    *(o buscar "JADE download tilab")*
-2. Descomprimir el zip
+2. Extraer el contenido del archivo descargado.
 3. Copiar el archivo `jade.jar` a la carpeta `libs/` del proyecto
 
 ---
 
-## 🚀 Cómo ejecutar
+##  Cómo ejecutar el proyecto
 
 ### 1) Compilar
 ```bash
@@ -112,28 +130,45 @@ mvn exec:java -Dexec.mainClass="pe.grupo4.minsa.launch.Platform1Launcher"
 mvn exec:java -Dexec.mainClass="pe.grupo4.minsa.launch.Platform2Launcher" -Dexec.args="localhost 1099"
 ```
 
-### En dos máquinas/VMs distintas
-Reemplaza `localhost` por la IP de la máquina donde corre P1:
+### Ejecución en diferentes equipos:
+Si las plataformas se ejecutan en máquinas distintas, reemplazar localhost por la dirección IP del equipo donde se encuentra la Plataforma 1.
 ```bash
 mvn exec:java -Dexec.mainClass="pe.grupo4.minsa.launch.Platform2Launcher" -Dexec.args="192.168.1.10 1099"
 ```
 
 ---
 
-## 📋 Evidencias para la sustentación
+## Resultados Esperados
 
-- Registros del DF (páginas amarillas) con cada agente
-- Mensajes FIPA-ACL entre contenedores P1 y P2
-- Hospital "Dos de Mayo" saturado → sistema deriva a "Rebagliati"
-- Confirmación de traslado con ETA por la ambulancia
-- GUI de JADE mostrando ambos contenedores conectados
+Durante la ejecución del sistema, se podrá observar:
+
+- Registro automático de los agentes en el Directory Facilitator.
+- Intercambio de mensajes FIPA-ACL entre plataformas.
+- Selección del hospital con disponibilidad de camas.
+- Simulación del rechazo de hospitales saturados.
+- Confirmación del traslado con tiempo estimado de llegada.
 
 ---
 
-## 👥 Integrantes del grupo
+## Caso de Prueba
 
-*(Agregar nombres aquí)*
+Un paciente en estado crítico requiere una cama UCI.
 
-## 🔗 Links
-- Repositorio: *(agregar link de GitHub)*
-- Video demo: *(agregar link de YouTube)*
+-El hospital "Dos de Mayo" no cuenta con disponibilidad.
+-El sistema identifica al hospital "Rebagliati" como alternativa.
+-Se coordina automáticamente el traslado mediante ambulancia.
+-Se informa el tiempo estimado de llegada.
+
+---
+
+## Integrantes:
+
+-Gutierrez Mamani, Joselin Victoria
+-Chaco Flores, Jose Luis
+-Layme Moya, Victor Hugo
+-Matos Ramos, Franco Antonio
+
+
+##  Links
+- Repositorio: https://github.com/Joselinguttierrez/sma-minsa-derivacion
+- Video demo: 
