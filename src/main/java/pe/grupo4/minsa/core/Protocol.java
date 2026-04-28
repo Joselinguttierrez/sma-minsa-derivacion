@@ -12,10 +12,12 @@ public class Protocol {
     // ── Ontologia comun ────────────────────────────────────────────────────
     public static final String ONTOLOGY = "minsa-derivacion-pacientes";
 
-    // ── Niveles de urgencia del paciente ──────────────────────────────────
-    public static final String URGENCIA_CRITICA  = "URGENCIA_CRITICA";   // UCI obligatoria
-    public static final String URGENCIA_MODERADA = "URGENCIA_MODERADA";  // Emergencia
-    public static final String URGENCIA_LEVE     = "URGENCIA_LEVE";      // General
+        // ── Niveles de urgencia del paciente ──────────────────────────────────
+    public static final String URGENCIA_CRITICA   = "URGENCIA_CRITICA";   // Riesgo vital inmediato
+    public static final String URGENCIA_ALTA      = "URGENCIA_ALTA";      // Atención inmediata
+    public static final String URGENCIA_MODERADA  = "URGENCIA_MODERADA";  // Atención prioritaria
+    public static final String URGENCIA_BAJA      = "URGENCIA_BAJA";      // Atención diferida
+    public static final String URGENCIA_LEVE      = "URGENCIA_LEVE";      // Consulta general
 
     // ── Tipos de cama ─────────────────────────────────────────────────────
     public static final String TIPO_UCI        = "UCI";
