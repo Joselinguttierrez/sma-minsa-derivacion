@@ -20,7 +20,7 @@ public class AgenteAmbulancia extends Agent {
     @Override
     protected void setup() {
         DfUtils.registrar(this, Protocol.SERVICIO_AMBULANCIA, "ambulancia-" + getLocalName());
-        System.out.println("[AMBULANCIA] 🚑 " + getLocalName()
+        System.out.println("[AMBULANCIA] " + getLocalName()
                 + " disponible para traslados.");
 
         addBehaviour(new CyclicBehaviour(this) {
@@ -48,9 +48,9 @@ public class AgenteAmbulancia extends Agent {
         // ETA simulado: entre 5 y 20 minutos
         int eta = (int)(Math.random() * 16) + 5;
 
-        System.out.println("\n[AMBULANCIA] 🚨 Solicitud recibida → Destino: " + hospital);
-        System.out.println("[AMBULANCIA] ⏱  ETA estimado: " + eta + " minutos");
-        System.out.println("[AMBULANCIA] 🔊 ¡En camino con sirenas!");
+        System.out.println("\n[AMBULANCIA] Solicitud recibida → Destino: " + hospital);
+        System.out.println("[AMBULANCIA]  ETA estimado: " + eta + " minutos");
+        System.out.println("[AMBULANCIA] ¡En camino con sirenas!");
 
         // Confirmar el traslado a quien lo solicito (la Central)
         ACLMessage confirmacion = msg.createReply();
@@ -61,7 +61,7 @@ public class AgenteAmbulancia extends Agent {
                 + Protocol.SEP + getLocalName());
         send(confirmacion);
 
-        System.out.println("[AMBULANCIA] ✅ Traslado confirmado hacia " + hospital + ".");
+        System.out.println("[AMBULANCIA] Traslado confirmado hacia " + hospital + ".");
     }
 
     @Override

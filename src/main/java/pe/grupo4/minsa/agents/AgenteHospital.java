@@ -1,13 +1,13 @@
 package pe.grupo4.minsa.agents;
 
-import jade.core.Agent;
+import java.util.List;
+
 import jade.core.AID;
+import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import pe.grupo4.minsa.core.DfUtils;
 import pe.grupo4.minsa.core.Protocol;
-
-import java.util.List;
 
 /**
  * AGENTE HOSPITAL - Plataforma 2
@@ -21,6 +21,9 @@ import java.util.List;
  *   args[1] = camas UCI disponibles   (ej: "3")
  *   args[2] = camas Emergencia        (ej: "5")
  *   args[3] = camas Generales         (ej: "10")
+ *
+ * Nota: Platform2Launcher crea 20 hospitales reales del Perú con camas
+ * aproximadas para simular la red de derivación.
  */
 public class AgenteHospital extends Agent {
 

@@ -1,13 +1,13 @@
 package pe.grupo4.minsa.agents;
 
-import jade.core.Agent;
+import java.util.List;
+
 import jade.core.AID;
+import jade.core.Agent;
 import jade.core.behaviours.WakerBehaviour;
 import jade.lang.acl.ACLMessage;
 import pe.grupo4.minsa.core.DfUtils;
 import pe.grupo4.minsa.core.Protocol;
-
-import java.util.List;
 
 /**
  * AGENTE PACIENTE - Plataforma 1
@@ -80,7 +80,7 @@ public class AgentePaciente extends Agent {
         List<AID> centrales = DfUtils.buscar(this, Protocol.SERVICIO_CENTRAL);
 
         if (centrales.isEmpty()) {
-            System.out.println("[PACIENTE:" + nombrePaciente + "] ❌ No se encontro la Central MINSA.");
+            System.out.println("[PACIENTE:" + nombrePaciente + "] No se encontro la Central MINSA.");
             return;
         }
 
@@ -98,7 +98,7 @@ public class AgentePaciente extends Agent {
         msg.setContent(contenido);
         send(msg);
 
-        System.out.println("[PACIENTE:" + nombrePaciente + "] ✉  Solicitud enviada a Central MINSA.");
+        System.out.println("[PACIENTE:" + nombrePaciente + "]  Solicitud enviada a Central MINSA.");
         System.out.println("[PACIENTE:" + nombrePaciente + "]    Contenido: " + contenido);
     }
 

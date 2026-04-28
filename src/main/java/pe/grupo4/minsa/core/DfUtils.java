@@ -1,14 +1,14 @@
 package pe.grupo4.minsa.core;
 
-import jade.core.Agent;
-import jade.core.AID;
-import jade.domain.DFService;
-import jade.domain.FIPAException;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import jade.core.AID;
+import jade.core.Agent;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
 
 /**
  * Utilidades para el Directory Facilitator (DF) de JADE.
@@ -34,10 +34,10 @@ public class DfUtils {
 
         try {
             DFService.register(agente, dfd);
-            System.out.println("[DF] ✅ " + agente.getLocalName()
+            System.out.println("[DF] " + agente.getLocalName()
                     + " registrado como: " + tipoServicio);
         } catch (FIPAException e) {
-            System.err.println("[DF] ❌ Error al registrar " + agente.getLocalName()
+            System.err.println("[DF] Error al registrar " + agente.getLocalName()
                     + ": " + e.getMessage());
         }
     }
@@ -62,7 +62,7 @@ public class DfUtils {
                     + " encontro " + resultado.size()
                     + " agente(s) de tipo: " + tipoServicio);
         } catch (FIPAException e) {
-            System.err.println("[DF] ❌ Error en busqueda: " + e.getMessage());
+            System.err.println("[DF] Error en busqueda: " + e.getMessage());
         }
         return resultado;
     }
@@ -75,7 +75,7 @@ public class DfUtils {
             DFService.deregister(agente);
             System.out.println("[DF] 🗑 " + agente.getLocalName() + " desregistrado.");
         } catch (FIPAException e) {
-            System.err.println("[DF] ❌ Error al desregistrar: " + e.getMessage());
+            System.err.println("[DF] Error al desregistrar: " + e.getMessage());
         }
     }
 }

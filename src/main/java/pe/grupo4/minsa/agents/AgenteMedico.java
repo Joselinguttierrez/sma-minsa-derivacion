@@ -22,7 +22,7 @@ public class AgenteMedico extends Agent {
     @Override
     protected void setup() {
         DfUtils.registrar(this, Protocol.SERVICIO_MEDICO, "medico-" + getLocalName());
-        System.out.println("[MEDICO] 👨‍⚕️ " + getLocalName() + " listo para evaluar pacientes.");
+        System.out.println("[MEDICO] " + getLocalName() + " listo para evaluar pacientes.");
 
         addBehaviour(new CyclicBehaviour(this) {
             @Override
@@ -48,7 +48,7 @@ public class AgenteMedico extends Agent {
         String paciente  = partes.length > 2 ? partes[2] : "Paciente";
         String tipoCama  = partes.length > 3 ? partes[3] : Protocol.TIPO_UCI;
 
-        System.out.println("\n[MEDICO] 🔬 Evaluando: " + paciente
+        System.out.println("\n[MEDICO] Evaluando: " + paciente
                 + " | Urgencia: " + urgencia
                 + " | Tipo cama: " + tipoCama);
 
@@ -59,11 +59,11 @@ public class AgenteMedico extends Agent {
         if (acepta) {
             respuesta.setPerformative(ACLMessage.AGREE);
             respuesta.setContent(Protocol.PACIENTE_ACEPTADO + Protocol.SEP + paciente);
-            System.out.println("[MEDICO] ✅ Paciente " + paciente + " ACEPTADO para ingreso.");
+            System.out.println("[MEDICO] Paciente " + paciente + " ACEPTADO para ingreso.");
         } else {
             respuesta.setPerformative(ACLMessage.REFUSE);
             respuesta.setContent(Protocol.PACIENTE_RECHAZADO + Protocol.SEP + paciente);
-            System.out.println("[MEDICO] ❌ Paciente " + paciente
+            System.out.println("[MEDICO] Paciente " + paciente
                     + " RECHAZADO (urgencia leve, buscar otro centro).");
         }
 

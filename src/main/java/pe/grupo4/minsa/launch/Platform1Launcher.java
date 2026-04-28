@@ -55,7 +55,7 @@ public class Platform1Launcher {
 
             AgentController paciente2 = mainContainer.createNewAgent(
                     "Paciente-RosaAlvarado",
-                    "pe.gr4upo.minsa.agents.AgentePaciente",
+                    "pe.grupo4.minsa.agents.AgentePaciente",
                     new Object[]{
                             "Rosa Alvarado Flores",
                             "URGENCIA_CRITICA",

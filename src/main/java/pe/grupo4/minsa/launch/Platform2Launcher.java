@@ -48,7 +48,7 @@ public class Platform2Launcher {
         }
 
         if (container == null) {
-            System.out.println("❌ No se pudo conectar a P1. Asegurate que Platform1Launcher este corriendo.");
+            System.out.println("No se pudo conectar a P1. Asegurate que Platform1Launcher este corriendo.");
             return;
         }
 
@@ -59,53 +59,99 @@ public class Platform2Launcher {
             System.out.println("║   Conectando a P1 en " + host + ":" + port + "           ║");
             System.out.println("╚══════════════════════════════════════════════════╝\n");
 
-            // ── Hospital Dos de Mayo: SIN UCI (saturado, simula COVID) ────
-            AgentController h1 = container.createNewAgent(
-                "Hospital-DosMayo",
-                "pe.grupo4.minsa.agents.AgenteHospital",
-                new Object[]{"Dos de Mayo", "0", "2", "5"}
-                // UCI=0 (saturado), Emergencia=2, Generales=5
-            );
-            h1.start();
-            Thread.sleep(500);
+            // ── Lista de hospitales reales del Perú con camas aproximadas ──
+            String[][] hospitales = new String[][]{
+                {"Dos de Mayo", "0", "2", "5"},
+                {"Edgardo Rebagliati Martins", "5", "10", "20"},
+                {"Arzobispo Loayza", "2", "8", "15"},
+                {"Guillermo Almenara", "4", "12", "25"},
+                {"Hipólito Unanue", "1", "6", "14"},
+                {"María Auxiliadora", "1", "4", "10"},
+                {"Sergio E. Bernales", "2", "5", "12"},
+                {"Alberto Sabogal Sologuren", "3", "7", "18"},
+                {"Carlos Lanfranco La Hoz", "1", "3", "8"},
+                {"Víctor Larco Herrera", "2", "4", "9"},
+                {"Daniel Alcides Carrión", "3", "9", "16"},
+                {"Cayetano Heredia", "4", "10", "22"},
+                {"José Casimiro Ulloa", "2", "6", "16"},
+                {"Naval Cirujano Mayor Santiago Távara", "1", "3", "8"},
+                {"Policlínico PNP", "1", "3", "8"},
+                {"Instituto Nacional del Niño San Borja", "2", "5", "12"},
+                {"Ramiro Prialé", "2", "6", "14"},
+                {"Carlos Alberto Seguin Escobedo", "2", "7", "18"},
+                {"Honorio Delgado Espinoza", "3", "9", "20"},
+                {"Virgen de la Puerta", "2", "8", "16"},
+                {"San Bartolomé", "2", "7", "18"},
+                {"Hospital Nacional de la Mujer", "2", "6", "14"},
+                {"Hospital Nacional de la Madre y el Niño", "2", "6", "14"},
+                {"Hospital Nacional de Niños San Borja", "2", "5", "13"},
+                {"Hospital Nacional Guillermo Billinghurst", "1", "4", "10"},
+                {"Regional de Cusco", "2", "5", "13"},
+                {"Regional Lambayeque", "3", "8", "15"},
+                {"Regional Docente de Trujillo", "2", "6", "14"},
+                {"Regional de Ica", "1", "4", "9"},
+                {"Regional de Arequipa", "3", "7", "17"},
+                {"Regional de Huancavelica", "0", "3", "6"},
+                {"Regional de Puno", "1", "4", "10"},
+                {"Regional de Junín", "2", "6", "12"},
+                {"Regional de Tacna", "1", "4", "11"},
+                {"Regional de Cajamarca", "1", "4", "10"},
+                {"Regional de Piura", "2", "6", "14"},
+                {"Regional de Tumbes", "1", "3", "9"},
+                {"Regional de Ayacucho", "1", "4", "11"},
+                {"Regional de Huánuco", "1", "4", "10"},
+                {"Regional de Ucayali", "1", "4", "11"},
+                {"Regional de Madre de Dios", "0", "3", "7"},
+                {"Regional de San Martín", "1", "5", "12"},
+                {"Regional de Loreto", "1", "5", "13"},
+                {"Regional de Apurímac", "1", "4", "10"},
+                {"Regional de Moquegua", "1", "4", "9"},
+                {"Regional de Pasco", "1", "4", "10"},
+                {"Regional de Áncash", "1", "5", "11"},
+                {"Regional de Amazonas", "1", "4", "9"},
+                {"Regional de Chachapoyas", "1", "3", "8"},
+                {"Regional de Bagua", "1", "3", "8"}
+            };
 
-            // ── Hospital Rebagliati: CON UCI disponible ───────────────────
-            AgentController h2 = container.createNewAgent(
-                "Hospital-Rebagliati",
-                "pe.grupo4.minsa.agents.AgenteHospital",
-                new Object[]{"Rebagliati", "3", "6", "12"}
-                // UCI=3, Emergencia=6, Generales=12
-            );
-            h2.start();
-            Thread.sleep(500);
+            for (String[] hospitalData : hospitales) {
+                String nombre = hospitalData[0];
+                String agenteNombre = "Hospital-" + nombre.replaceAll("\\s+", "").replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u").replace("ñ", "n").replace("í", "i").replace("ú", "u").replace("Á", "A").replace("É", "E").replace("Í", "I").replace("Ó", "O").replace("Ú", "U").replace("Ñ", "N");
+                AgentController hospital = container.createNewAgent(
+                    agenteNombre,
+                    "pe.grupo4.minsa.agents.AgenteHospital",
+                    new Object[]{nombre, hospitalData[1], hospitalData[2], hospitalData[3]}
+                );
+                hospital.start();
+                Thread.sleep(300);
+            }
 
-            // ── Hospital Loayza: recursos moderados ───────────────────────
-            AgentController h3 = container.createNewAgent(
-                "Hospital-Loayza",
-                "pe.grupo4.minsa.agents.AgenteHospital",
-                new Object[]{"Loayza", "1", "4", "8"}
-            );
-            h3.start();
-            Thread.sleep(500);
+            // ── Agentes Medicos ────────────────────────────────────────────
+            int cantidadMedicos = hospitales.length * 2; // 2 medicos por cada hospital
+            for (int i = 1; i <= cantidadMedicos; i++) {
+                String medicoNombre = String.format("Medico-%04d", i);
+                AgentController medico = container.createNewAgent(
+                    medicoNombre,
+                    "pe.grupo4.minsa.agents.AgenteMedico",
+                    new Object[]{}
+                );
+                medico.start();
+                Thread.sleep(150);
+            }
 
-            // ── Agente Medico ─────────────────────────────────────────────
-            AgentController medico = container.createNewAgent(
-                "AgenteMedico",
-                "pe.grupo4.minsa.agents.AgenteMedico",
-                new Object[]{}
-            );
-            medico.start();
-            Thread.sleep(500);
+            // ── Agentes Ambulancia ─────────────────────────────────────────
+            int cantidadAmbulancias = hospitales.length * 3; // 3 ambulancias por cada hospital
+            for (int i = 1; i <= cantidadAmbulancias; i++) {
+                String ambulanciaNombre = String.format("Ambulancia-%04d", i);
+                AgentController ambulancia = container.createNewAgent(
+                    ambulanciaNombre,
+                    "pe.grupo4.minsa.agents.AgenteAmbulancia",
+                    new Object[]{}
+                );
+                ambulancia.start();
+                Thread.sleep(150);
+            }
 
-            // ── Agente Ambulancia ─────────────────────────────────────────
-            AgentController ambulancia = container.createNewAgent(
-                "AgenteAmbulancia",
-                "pe.grupo4.minsa.agents.AgenteAmbulancia",
-                new Object[]{}
-            );
-            ambulancia.start();
-
-            System.out.println("\n✅ Plataforma 2 lista. 3 hospitales, 1 medico, 1 ambulancia registrados.\n");
+            System.out.println("\n Plataforma 2 lista. 50 hospitales, " + cantidadMedicos + " medicos, " + cantidadAmbulancias + " ambulancias registrados.\n");
 
         } catch (StaleProxyException | InterruptedException e) {
             e.printStackTrace();

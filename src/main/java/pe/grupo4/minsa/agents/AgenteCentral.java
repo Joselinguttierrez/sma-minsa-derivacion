@@ -1,13 +1,13 @@
 package pe.grupo4.minsa.agents;
 
-import jade.core.Agent;
+import java.util.List;
+
 import jade.core.AID;
+import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import pe.grupo4.minsa.core.DfUtils;
 import pe.grupo4.minsa.core.Protocol;
-
-import java.util.List;
 
 /**
  * AGENTE CENTRAL - Plataforma 1
@@ -30,7 +30,7 @@ public class AgenteCentral extends Agent {
     protected void setup() {
         DfUtils.registrar(this, Protocol.SERVICIO_CENTRAL, "central-minsa-principal");
 
-        System.out.println("\n🏛  CENTRAL MINSA ACTIVA - Esperando solicitudes de derivacion...\n");
+        System.out.println("\nCENTRAL MINSA ACTIVA - Esperando solicitudes de derivacion...\n");
 
         // Comportamiento ciclico: siempre escuchando mensajes
         addBehaviour(new CyclicBehaviour(this) {
@@ -54,7 +54,7 @@ public class AgenteCentral extends Agent {
         int performativa = msg.getPerformative();
         String remitente = msg.getSender().getLocalName();
 
-        System.out.println("\n[CENTRAL] 📨 Mensaje de " + remitente
+        System.out.println("\n[CENTRAL] Mensaje de " + remitente
                 + " [" + ACLMessage.getPerformative(performativa) + "]: " + contenido);
 
         if (performativa == ACLMessage.INFORM
@@ -72,14 +72,14 @@ public class AgenteCentral extends Agent {
         } else if (performativa == ACLMessage.REFUSE
                 && contenido.startsWith(Protocol.CAMA_NO_DISPONIBLE)) {
             // Un hospital rechazo (sin camas)
-            System.out.println("[CENTRAL] ⚠  Hospital " + remitente
+            System.out.println("[CENTRAL] Hospital " + remitente
                     + " no tiene camas disponibles. Esperando otro hospital...");
 
         } else if (performativa == ACLMessage.INFORM
                 && contenido.startsWith(Protocol.TRASLADO_CONFIRMADO)) {
             // La ambulancia confirmo el traslado
-            System.out.println("[CENTRAL] ✅ " + contenido);
-            System.out.println("[CENTRAL] 🎉 ¡DERIVACION COMPLETADA EXITOSAMENTE!\n");
+            System.out.println("[CENTRAL] " + contenido);
+            System.out.println("[CENTRAL] ¡DERIVACION COMPLETADA EXITOSAMENTE!\n");
         }
     }
 
@@ -96,7 +96,7 @@ public class AgenteCentral extends Agent {
         String tipoCama       = partes.length > 3 ? partes[3] : Protocol.TIPO_UCI;
         String nombrePaciente = partes.length > 4 ? partes[4] : "Paciente";
 
-        System.out.println("[CENTRAL] 🚨 Paciente: " + nombrePaciente + " | Urgencia: " + urgencia);
+        System.out.println("[CENTRAL] Paciente: " + nombrePaciente + " | Urgencia: " + urgencia);
 
         // Reintentar hasta 5 veces si no hay hospitales
         addBehaviour(new jade.core.behaviours.WakerBehaviour(this, 3000) {
@@ -106,7 +106,7 @@ public class AgenteCentral extends Agent {
                 List<AID> hospitales = DfUtils.buscar(myAgent, Protocol.SERVICIO_HOSPITAL);
                 intentos++;
                 if (!hospitales.isEmpty()) {
-                    System.out.println("[CENTRAL] 🔍 Encontré " + hospitales.size() + " hospital(es). Enviando consultas...");
+                    System.out.println("[CENTRAL] Encontré " + hospitales.size() + " hospital(es). Enviando consultas...");
                     for (AID hospital : hospitales) {
                         ACLMessage solicitud = new ACLMessage(ACLMessage.REQUEST);
                         solicitud.addReceiver(hospital);
@@ -116,10 +116,10 @@ public class AgenteCentral extends Agent {
                         System.out.println("[CENTRAL] ➡  Consulta enviada a: " + hospital.getLocalName());
                     }
                 } else if (intentos < 5) {
-                    System.out.println("[CENTRAL] ⏳ Sin hospitales aún. Reintentando en 3 segundos... (" + intentos + "/5)");
+                    System.out.println("[CENTRAL] Sin hospitales aún. Reintentando en 3 segundos... (" + intentos + "/5)");
                     reset(3000);
                 } else {
-                    System.out.println("[CENTRAL] ❌ No se encontraron hospitales después de 5 intentos.");
+                    System.out.println("[CENTRAL] No se encontraron hospitales después de 5 intentos.");
                 }
             }
         });
@@ -135,14 +135,14 @@ public class AgenteCentral extends Agent {
         String hospitalNombre = partes.length > 1 ? partes[1] : "Hospital";
         String camas          = partes.length > 2 ? partes[2] : "1";
 
-        System.out.println("[CENTRAL] ✅ Hospital " + hospitalNombre
+        System.out.println("[CENTRAL] Hospital " + hospitalNombre
                 + " acepta al paciente. Camas disponibles: " + camas);
-        System.out.println("[CENTRAL] 🚑 Coordinando traslado...");
+        System.out.println("[CENTRAL] Coordinando traslado...");
 
         List<AID> ambulancias = DfUtils.buscar(this, Protocol.SERVICIO_AMBULANCIA);
 
         if (ambulancias.isEmpty()) {
-            System.out.println("[CENTRAL] ❌ No hay ambulancias disponibles.");
+            System.out.println("[CENTRAL] No hay ambulancias disponibles.");
             return;
         }
 
